@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 
 @RestController
 public class ProductController {
@@ -37,5 +38,17 @@ public class ProductController {
     public void deleteProductById(@PathVariable Long id){
         productRepository.deleteById(id);
     }
+
+    @PutMapping("/products/{id}")
+    public Product updateProduct(@PathVariable Long id, @RequestBody Product updatedProduct) {
+    Product existing = productRepository.findById(id)
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found"));
+
+    existing.setName(updatedProduct.getName());
+    existing.setPrice(updatedProduct.getPrice());
+    existing.setQuantity(updatedProduct.getQuantity());
+
+    return productRepository.save(existing);
+}
 
 }
