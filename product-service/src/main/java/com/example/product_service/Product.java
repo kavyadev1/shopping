@@ -7,16 +7,40 @@ import jakarta.persistence.Id;
 
 import java.math.BigDecimal;
 
-       @Entity                             // blank 1: this class is a table
+       @Entity                            
 public class Product {
 
-       @Id                          // blank 2: this field is the primary key
-       @GeneratedValue(strategy = GenerationType.IDENTITY)                             // blank 3: MySQL generates the number
-    private Long id;
+       @Id                          
+       @GeneratedValue(strategy = GenerationType.IDENTITY)                         
+    private Long id;  
+    public Long getId(){
+        return id;
+    }  
+    public void setId(Long id){
+        this.id = id; 
+    }
 
     private String name;
+    public String getName(){
+        return name;
+    }
+    public void setName(String name){
+        this.name = name;
+    }
 
     private BigDecimal price;
+    public BigDecimal getPrice (){
+        return price;
+    }
+    public void setPrice(BigDecimal price){
+        this.price = price;
+    }
 
-    private Integer quantity;            // blank 4: which type for a whole number?
+    private Integer quantity;    
+    public Integer getQuantity (){
+        return quantity;
+    } 
+    public void setQuantity(Integer quantity){
+        this.quantity = quantity;
+    }     
 }
