@@ -22,6 +22,10 @@ public class ProductService {
         return productRepository.save(product);
     }
 
+    public Long countProduct(){
+        return productRepository.count();
+    }
+
     
     public Product getProductById( Long id){
         return productRepository.findById(id)
