@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
 
 @RestController
 public class ProductController {
@@ -35,9 +37,12 @@ public class ProductController {
     }
 
     @PostMapping("/products")
-    public Product createProduct(@RequestBody Product product) {
-        return productService.createProduct(product);
+    public ResponseEntity <Product> createProduct(@RequestBody Product product) {
+         Product saved = productService.createProduct(product);
+         return ResponseEntity.status(HttpStatus.CREATED).body(saved);
     }
+
+    
 
     @PutMapping("/products/{id}")
     public Product updateProduct(@PathVariable Long id, @RequestBody Product updatedProduct) {
