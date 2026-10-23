@@ -18,8 +18,11 @@ public class ProductService {
     public List<Product> getAllProducts() {
         return productRepository.findAll();
     }
-    public Product createProduct( Product product) {
-        return productRepository.save(product);
+    
+    public ProductResponse createProduct(ProductRequest request) {
+    Product product = toEntity(request);
+    Product saved = productRepository.save(product);
+    return toResponse(saved);
     }
 
     public Long countProduct(){
@@ -45,5 +48,23 @@ public class ProductService {
 
 public void deleteProductById( Long id){
         productRepository.deleteById(id);
+    }
+
+    private ProductResponse toResponse(Product product){
+        ProductResponse response = new ProductResponse();
+        response.setId(product.getId());
+        response.setName(product.getName());
+        response.setPrice(product.getPrice());
+        response.setQuantity(product.getQuantity());
+        return response;
+
+    }
+
+    private Product toEntity(ProductRequest request){
+        Product product = new Product();
+        product.setName(request.getName());
+        product.setPrice(request.getPrice());
+        product.setQuantity(request.getQuantity());
+        return product;
     }
 }

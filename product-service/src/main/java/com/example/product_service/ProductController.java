@@ -37,10 +37,12 @@ public class ProductController {
     }
 
     @PostMapping("/products")
-    public ResponseEntity <Product> createProduct(@RequestBody Product product) {
-         Product saved = productService.createProduct(product);
+    public ResponseEntity <ProductResponse> createProduct(@RequestBody ProductRequest request) {
+         ProductResponse saved = productService.createProduct(request);
          return ResponseEntity.status(HttpStatus.CREATED).body(saved);
     }
+
+
 
     
 
