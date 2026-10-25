@@ -30,9 +30,13 @@ public class ProductService {
     }
 
     
-    public Product getProductById( Long id){
-        return productRepository.findById(id)
+
+    public ProductResponse getProductById (Long id){
+        Product product = productRepository.findById(id)
         .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found"));
+        return toResponse(product);
+        
+
     }
 
        public Product updateProduct( Long id,  Product updatedProduct) {
