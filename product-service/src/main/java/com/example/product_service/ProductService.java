@@ -14,12 +14,18 @@ public class ProductService {
     public ProductService(ProductRepository productRepository) {
         this.productRepository = productRepository;
     }
-
-    public List<Product> getAllProducts() {
-        return productRepository.findAll();
+    
+    public List<ProductResponse> getAllProducts(){
+        return productRepository.findAll()
+        .stream()
+        .map(this::toResponse)
+        .toList();
     }
-    public Product createProduct( Product product) {
-        return productRepository.save(product);
+    
+    public ProductResponse createProduct(ProductRequest request) {
+    Product product = toEntity(request);
+    Product saved = productRepository.save(product);
+    return toResponse(saved);
     }
 
     public Long countProduct(){
@@ -27,23 +33,48 @@ public class ProductService {
     }
 
     
-    public Product getProductById( Long id){
-        return productRepository.findById(id)
+
+    public ProductResponse getProductById (Long id){
+        Product product = productRepository.findById(id)
         .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found"));
+        return toResponse(product);
+        
+
     }
 
-       public Product updateProduct( Long id,  Product updatedProduct) {
-    Product existing = productRepository.findById(id)
+
+public ProductResponse updateProduct (Long id , ProductRequest request){
+
+Product existing = productRepository.findById(id)
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found"));
 
-    existing.setName(updatedProduct.getName());
-    existing.setPrice(updatedProduct.getPrice());
-    existing.setQuantity(updatedProduct.getQuantity());
+    existing.setName(request.getName());
+    existing.setPrice(request.getPrice());
+    existing.setQuantity(request.getQuantity());
+    Product saved = productRepository.save(existing);
 
-    return productRepository.save(existing);
+    return toResponse(saved);
+     
 }
-
 public void deleteProductById( Long id){
         productRepository.deleteById(id);
+    }
+
+    private ProductResponse toResponse(Product product){
+        ProductResponse response = new ProductResponse();
+        response.setId(product.getId());
+        response.setName(product.getName());
+        response.setPrice(product.getPrice());
+        response.setQuantity(product.getQuantity());
+        return response;
+
+    }
+
+    private Product toEntity(ProductRequest request){
+        Product product = new Product();
+        product.setName(request.getName());
+        product.setPrice(request.getPrice());
+        product.setQuantity(request.getQuantity());
+        return product;
     }
 }
