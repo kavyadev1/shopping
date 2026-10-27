@@ -14,9 +14,12 @@ public class ProductService {
     public ProductService(ProductRepository productRepository) {
         this.productRepository = productRepository;
     }
-
-    public List<Product> getAllProducts() {
-        return productRepository.findAll();
+    
+    public List<Product> getAllProducts(){
+        return productRepository.findAll()
+        .stream()
+        .map(this::toResponse)
+        .toList();
     }
     
     public ProductResponse createProduct(ProductRequest request) {
