@@ -15,7 +15,7 @@ public class ProductService {
         this.productRepository = productRepository;
     }
     
-    public List<Product> getAllProducts(){
+    public List<ProductResponse> getAllProducts(){
         return productRepository.findAll()
         .stream()
         .map(this::toResponse)
@@ -42,17 +42,20 @@ public class ProductService {
 
     }
 
-       public Product updateProduct( Long id,  Product updatedProduct) {
-    Product existing = productRepository.findById(id)
+
+public ProductResponse updateProduct (Long id , ProductRequest request){
+
+Product existing = productRepository.findById(id)
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found"));
 
-    existing.setName(updatedProduct.getName());
-    existing.setPrice(updatedProduct.getPrice());
-    existing.setQuantity(updatedProduct.getQuantity());
+    existing.setName(request.getName());
+    existing.setPrice(request.getPrice());
+    existing.setQuantity(request.getQuantity());
+    Product saved = productRepository.save(existing);
 
-    return productRepository.save(existing);
+    return toResponse(saved);
+     
 }
-
 public void deleteProductById( Long id){
         productRepository.deleteById(id);
     }

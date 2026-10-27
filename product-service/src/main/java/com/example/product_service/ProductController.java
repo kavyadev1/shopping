@@ -22,7 +22,7 @@ public class ProductController {
     }
 
     @GetMapping("/products")
-    public List<Product> getAllProducts() {
+    public List<ProductResponse> getAllProducts() {
         return productService.getAllProducts();
     }
 
@@ -47,9 +47,11 @@ public class ProductController {
 
     
 
+    
+
     @PutMapping("/products/{id}")
-    public Product updateProduct(@PathVariable Long id, @RequestBody Product updatedProduct) {
-        return productService.updateProduct(id, updatedProduct);
+    public ProductResponse updateProduct(@PathVariable Long id, @RequestBody ProductRequest request) {
+        return productService.updateProduct(id, request);
     }
 
     
