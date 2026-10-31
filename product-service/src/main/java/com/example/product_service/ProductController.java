@@ -1,7 +1,6 @@
 package com.example.product_service;
-
 import java.util.List;
-
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -38,19 +37,13 @@ public class ProductController {
     }
 
     @PostMapping("/products")
-    public ResponseEntity <ProductResponse> createProduct(@RequestBody ProductRequest request) {
+    public ResponseEntity <ProductResponse> createProduct(@Valid @RequestBody ProductRequest request) {
          ProductResponse saved = productService.createProduct(request);
          return ResponseEntity.status(HttpStatus.CREATED).body(saved);
-    }
-
-
-
-    
-
-    
+    }    
 
     @PutMapping("/products/{id}")
-    public ProductResponse updateProduct(@PathVariable Long id, @RequestBody ProductRequest request) {
+    public ProductResponse updateProduct(@PathVariable Long id,@Valid  @RequestBody ProductRequest request) {
         return productService.updateProduct(id, request);
     }
 
